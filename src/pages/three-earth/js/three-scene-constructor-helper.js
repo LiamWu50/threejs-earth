@@ -5,7 +5,10 @@ import loadEarthModel from "./earth-model-constructor";
 import loadSatelliteOrbit from "./satellite-orbit-constructor";
 import loadDynamicAperture from "./dynamic-aperture-constructor";
 import loadFlyingLine from "./flying-line-constructor";
+<<<<<<< HEAD
 import laodChinaBoundry from "./chinae-boundry-constructor";
+=======
+>>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
 
 /**
  * Three场景构建工具
@@ -17,11 +20,14 @@ export default new (class ThreeSceneConstructorHelper {
     this._scene = null;
     this._light = null;
     this._controls = null;
+<<<<<<< HEAD
     //各类加载的对象
     this._satelliteOrbiGroup = null
     this._earthMesh = null
     this._dynamicApertureGroup = null
     this._flyingLineGroup = null
+=======
+>>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
   }
 
   get initThreeScene() {
@@ -41,7 +47,10 @@ export default new (class ThreeSceneConstructorHelper {
     this._initScene();
     this._initControls();
     this._initLight();
+<<<<<<< HEAD
     this._loadSceneModel()
+=======
+>>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
     this._animate();
 
     window.addEventListener("resize", this._onWindowResize.bind(this), false);
@@ -62,6 +71,7 @@ export default new (class ThreeSceneConstructorHelper {
     //加载星空背景
     loadStarryScene(this._scene);
     //加载地球模型
+<<<<<<< HEAD
     this._earthMesh = loadEarthModel(this._scene);
     //加载卫星环绕效果
     this._satelliteOrbiGroup = loadSatelliteOrbit(this._scene);
@@ -71,6 +81,15 @@ export default new (class ThreeSceneConstructorHelper {
     this._flyingLineGroup = loadFlyingLine(this._scene);
     //加载中国区划边界
     // laodChinaBoundry(this._scene);
+=======
+    loadEarthModel(this._scene);
+    //加载卫星环绕效果
+    loadSatelliteOrbit(this._scene);
+    //加载动态光圈
+    loadDynamicAperture(this._scene);
+    //加载城市飞线
+    loadFlyingLine(this._scene);
+>>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
   }
 
   /**
@@ -94,7 +113,11 @@ export default new (class ThreeSceneConstructorHelper {
     const width = containerDom.clientWidth,
       height = containerDom.clientHeight;
     this._camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+<<<<<<< HEAD
     this._camera.position.set(5, -20, 20);
+=======
+    this._camera.position.set(5, -20, 50);
+>>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
     this._camera.lookAt(0, 3, 0);
   }
 
@@ -168,11 +191,14 @@ export default new (class ThreeSceneConstructorHelper {
   _animate() {
     window.requestAnimationFrame(() => {
       if (this._controls) this._controls.update();
+<<<<<<< HEAD
       this._satelliteOrbiGroup.rotation.z = this._satelliteOrbiGroup.rotation.z + 0.01;
       this._earthMesh.rotation.y = this._earthMesh.rotation.y + 0.001;
       this._dynamicApertureGroup.rotation.y = this._dynamicApertureGroup.rotation.y + 0.001;
       this._flyingLineGroup.rotation.y = this._flyingLineGroup.rotation.y + 0.001;
 
+=======
+>>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
       this._renders();
       this._animate();
     });
