@@ -2,22 +2,30 @@ import * as THREE from "three";
 import { cityList, bizLines } from "../../../config/index";
 import EarthSceneConfig from "../../../config/scene-config";
 
-const waveMeshArr = [];
 /**
- * 构造星空场景
- * @param {THREE.Scene} scene
+ * 加载动态光圈
+ * @param {THREE.Scene} threeScene
  */
-export default function loadDynamicAperture(scene) {
+export default function loadDynamicAperture(threeScene) {
   const textureLoader = new THREE.TextureLoader();
   const texture = textureLoader.load("/source/apertur.png");
+  const waveMeshArr = [];
+  const group = new THREE.Group()
+
   for (const key in cityList) {
     const city = cityList[key];
-    const pos = lon2xyz(EarthSceneConfig.earthRadius, city.longitude, city.latitude);
+    const pos = lon2xyz(
+      EarthSceneConfig.earthRadius,
+      city.longitude,
+      city.latitude
+    );
     const mesh = createPointMesh(pos, texture);
-    scene.add(mesh);
     waveMeshArr.push(mesh);
+    group.add(mesh)
   }
-  animate();
+  animate(waveMeshArr);
+  threeScene.add(group);
+  return group
 }
 
 function createPointMesh(pos, texture) {
@@ -45,7 +53,7 @@ function createPointMesh(pos, texture) {
   return mesh;
 }
 
-function cityWaveAnimate() {
+function cityWaveAnimate(waveMeshArr) {
   // 所有波动光圈都有自己的透明度和大小状态
   // 一个波动光圈透明度变化过程是：0~1~0反复循环
   waveMeshArr.forEach((mesh) => {
@@ -65,23 +73,23 @@ function cityWaveAnimate() {
   });
 }
 
-function animate() {
+function animate(waveMeshArr) {
   window.requestAnimationFrame(() => {
-    cityWaveAnimate();
-    animate();
+    cityWaveAnimate(waveMeshArr);
+    animate(waveMeshArr);
   });
 }
 
 // 经纬度转地球坐标
 function lon2xyz(radius, longitude, latitude) {
-    let lon = (longitude * Math.PI) / 180; //转弧度值
-    const lat = (latitude * Math.PI) / 180; //转弧度值
-    lon = -lon; // three.js坐标系z坐标轴对应经度-90度，而不是90度
+  let lon = (longitude * Math.PI) / 180; //转弧度值
+  const lat = (latitude * Math.PI) / 180; //转弧度值
+  lon = -lon; // three.js坐标系z坐标轴对应经度-90度，而不是90度
 
-    // 经纬度坐标转球面坐标计算公式
-    const x = radius * Math.cos(lat) * Math.cos(lon);
-    const y = radius * Math.sin(lat);
-    const z = radius * Math.cos(lat) * Math.sin(lon);
-    // 返回球面坐标
-    return new THREE.Vector3(x, y, z);
-  }
+  // 经纬度坐标转球面坐标计算公式
+  const x = radius * Math.cos(lat) * Math.cos(lon);
+  const y = radius * Math.sin(lat);
+  const z = radius * Math.cos(lat) * Math.sin(lon);
+  // 返回球面坐标
+  return new THREE.Vector3(x, y, z);
+}

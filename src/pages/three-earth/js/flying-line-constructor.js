@@ -7,33 +7,38 @@ import { Line2 } from "three/examples/jsm/lines/Line2";
 
 /**
  * 加载城市之间的飞线
- * @param {THREE.Scene} scene
+ * @param {THREE.Scene} threeScene
  */
-export default function loadFlyingLine(scene) {
+export default function loadFlyingLine(threeScene) {
+  const { earthRadius } = EarthSceneConfig;
+  const animateDots = []
+  const group = new THREE.Group()
+
   for (const key in bizLines) {
-    const bizLine = bizLines[key];
-    const fromCity = cityList[bizLine.from];
-    const v0 = lon2xyz(
-      EarthSceneConfig.earthRadius,
-      fromCity.longitude,
-      fromCity.latitude
-    );
-    bizLine.to.forEach((city) => {
+    const fromCity = cityList[bizLines[key].from];
+    const v0 = lon2xyz(earthRadius, fromCity.longitude, fromCity.latitude);
+
+    bizLines[key].to.forEach((city) => {
       const toCity = cityList[city];
-      const v3 = lon2xyz(
-        EarthSceneConfig.earthRadius,
-        toCity.longitude,
-        toCity.latitude
-      );
+      const v3 = lon2xyz(earthRadius, toCity.longitude, toCity.latitude);
       const { curve, lineMesh } = addLines(v0, v3);
-      scene.add(lineMesh);
+      animateDots.push(curve)
+      group.add(lineMesh)
     });
   }
+
+  const aGroup = loadFlyingBlock(animateDots, threeScene);
+  aGroup.children.forEach(item=> {
+    group.add(item)
+  })
+
+  threeScene.add(group);
+  return group
 }
 
 function addLines(v0, v3) {
   // 夹角
-  const angle = (v0.angleTo(v3) * 5) / Math.PI / 0.1; // 0 ~ Math.PI
+  const angle = (v0.angleTo(v3) * 3) / Math.PI / 0.1; // 0 ~ Math.PI
   const aLen = angle * 0.4,
     hLen = angle * angle * 12;
   const p0 = new THREE.Vector3(0, 0, 0);
@@ -62,12 +67,12 @@ function addLines(v0, v3) {
    * s — 饱和度 between 0.0 and 1.0
    * l — 亮度 between 0.0 and 1.0
    */
-  for (let j = 0; j < points.length; j++) {
-    // color.setHSL( .31666+j*0.005,0.7, 0.7); //绿色
-    color.setHSL(0.81666 + j, 0.88, 0.715 + j * 0.0025); //粉色
+  points.forEach((point, i) => {
+    // color.setHSL(0.31666 + i * 0.005, 0.7, 0.7); //绿色
+    color.setHSL(0.81666 + i, 0.88, 0.715 + i * 0.0025); //粉色
     colors.push(color.r, color.g, color.b);
-    positions.push(points[j].x, points[j].y, points[j].z);
-  }
+    positions.push(point.x, point.y, point.z);
+  });
   geometry.setPositions(positions);
   geometry.setColors(colors);
   const matLine = new LineMaterial({
@@ -80,6 +85,36 @@ function addLines(v0, v3) {
     curve: curve,
     lineMesh: new Line2(geometry, matLine),
   };
+}
+
+/**
+ * 加载飞行的块
+ * @param {Array} animateDots
+ */
+function loadFlyingBlock(animateDots, threeScene) {
+  const aGroup = new THREE.Group()
+  for (let i = 0; i < animateDots.length; i++) {
+    const aGeo = new THREE.SphereGeometry(0.03, 0.03, 0.03);
+    const aMater = new THREE.MeshPhongMaterial({ color: "#F8D764" });
+    const aMesh = new THREE.Mesh(aGeo, aMater);
+    aGroup.add(aMesh);
+  }
+  let vIndex = 0;
+  function animateLine() {
+    aGroup.children.forEach((ele, index) => {
+      const v = animateDots[index].getPoints(100)[vIndex];
+      ele.position.set(v.x, v.y, v.z);
+    });
+    vIndex++;
+    if (vIndex > 100) {
+      vIndex = 0;
+    }
+    setTimeout(animateLine, 20);
+  }
+  threeScene.add(aGroup)
+  animateLine();
+
+  return aGroup
 }
 
 //求两点中的中点 : 将两个向量相加然后除以二

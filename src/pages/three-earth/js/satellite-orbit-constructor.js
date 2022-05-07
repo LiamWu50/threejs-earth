@@ -2,9 +2,9 @@ import * as THREE from "three";
 
 /**
  * 加载卫星环绕效果
- * @param {THREE.Scene} scene
+ * @param {THREE.Scene} threeScene
  */
-export default function loadSatelliteOrbit(scene) {
+export default function loadSatelliteOrbit(threeScene) {
   const globeTextureLoader = new THREE.TextureLoader();
   const haloTexture = globeTextureLoader.load("/source/halo.png");
   const smallEarthTexture = globeTextureLoader.load("/source/smallEarth.png");
@@ -35,5 +35,6 @@ export default function loadSatelliteOrbit(scene) {
   group.add(earthPoints);
 
   group.rotation.set(1.9, 0.5, 1);
-  scene.add(group);
+  threeScene.add(group);
+  return group
 }

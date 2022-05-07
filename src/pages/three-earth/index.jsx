@@ -5,8 +5,8 @@ import { useEffect } from "react";
 const ThreeEarth = () => {
   useEffect(() => {
     ThreeSceneConstructorHelper.initThreeScene();
-    ThreeSceneConstructorHelper.loadSceneModel()
-  });
+    // ThreeSceneConstructorHelper.loadSceneModel()
+  }, []);
 
   return <div className="earth-container" id="container"></div>;
 };
