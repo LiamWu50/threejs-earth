@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import starryBgImage from "@/assets/images/three-earth/starry-background.png";
 
 /**
  * 构造星空场景
@@ -6,9 +7,7 @@ import * as THREE from "three";
  */
 export default function loadStarryScene(threeScene) {
   const geometry = new THREE.BufferGeometry();
-  const texture = new THREE.TextureLoader().load(
-    "/source/starry-background.png"
-  );
+  const texture = new THREE.TextureLoader().load(starryBgImage);
   const positions = [];
   const colors = [];
 

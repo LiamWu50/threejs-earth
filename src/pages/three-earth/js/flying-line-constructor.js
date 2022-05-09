@@ -1,13 +1,12 @@
 import * as THREE from "three";
-import EarthSceneConfig from "../../../config/scene-config";
-import { cityList, bizLines } from "../../../config/index";
+import EarthSceneConfig from "@/config/scene-config";
+import { cityList, bizLines } from "@/config/index";
 import { LineGeometry } from "three/examples/jsm/lines/LineGeometry";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial";
 import { Line2 } from "three/examples/jsm/lines/Line2";
 
 /**
  * 加载城市之间的飞线
-<<<<<<< HEAD
  * @param {THREE.Scene} threeScene
  */
 export default function loadFlyingLine(threeScene) {
@@ -29,45 +28,14 @@ export default function loadFlyingLine(threeScene) {
   }
 
   const aGroup = loadFlyingBlock(animateDots, threeScene);
-  aGroup.children.forEach(item=> {
-    group.add(item)
-  })
 
-  threeScene.add(group);
-  return group
-=======
- * @param {THREE.Scene} scene
- */
-export default function loadFlyingLine(scene) {
-  for (const key in bizLines) {
-    const bizLine = bizLines[key];
-    const fromCity = cityList[bizLine.from];
-    const v0 = lon2xyz(
-      EarthSceneConfig.earthRadius,
-      fromCity.longitude,
-      fromCity.latitude
-    );
-    bizLine.to.forEach((city) => {
-      const toCity = cityList[city];
-      const v3 = lon2xyz(
-        EarthSceneConfig.earthRadius,
-        toCity.longitude,
-        toCity.latitude
-      );
-      const { curve, lineMesh } = addLines(v0, v3);
-      scene.add(lineMesh);
-    });
-  }
->>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
+  threeScene.add(group, aGroup);
+  return [group, aGroup]
 }
 
 function addLines(v0, v3) {
   // 夹角
-<<<<<<< HEAD
   const angle = (v0.angleTo(v3) * 3) / Math.PI / 0.1; // 0 ~ Math.PI
-=======
-  const angle = (v0.angleTo(v3) * 5) / Math.PI / 0.1; // 0 ~ Math.PI
->>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
   const aLen = angle * 0.4,
     hLen = angle * angle * 12;
   const p0 = new THREE.Vector3(0, 0, 0);
@@ -96,21 +64,12 @@ function addLines(v0, v3) {
    * s — 饱和度 between 0.0 and 1.0
    * l — 亮度 between 0.0 and 1.0
    */
-<<<<<<< HEAD
   points.forEach((point, i) => {
     // color.setHSL(0.31666 + i * 0.005, 0.7, 0.7); //绿色
     color.setHSL(0.81666 + i, 0.88, 0.715 + i * 0.0025); //粉色
     colors.push(color.r, color.g, color.b);
     positions.push(point.x, point.y, point.z);
   });
-=======
-  for (let j = 0; j < points.length; j++) {
-    // color.setHSL( .31666+j*0.005,0.7, 0.7); //绿色
-    color.setHSL(0.81666 + j, 0.88, 0.715 + j * 0.0025); //粉色
-    colors.push(color.r, color.g, color.b);
-    positions.push(points[j].x, points[j].y, points[j].z);
-  }
->>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
   geometry.setPositions(positions);
   geometry.setColors(colors);
   const matLine = new LineMaterial({
@@ -125,7 +84,6 @@ function addLines(v0, v3) {
   };
 }
 
-<<<<<<< HEAD
 /**
  * 加载飞行的块
  * @param {Array} animateDots
@@ -150,14 +108,11 @@ function loadFlyingBlock(animateDots, threeScene) {
     }
     setTimeout(animateLine, 20);
   }
-  threeScene.add(aGroup)
   animateLine();
 
   return aGroup
 }
 
-=======
->>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
 //求两点中的中点 : 将两个向量相加然后除以二
 function getVCenter(v1, v2) {
   const v = v1.add(v2);

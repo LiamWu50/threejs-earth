@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import chinaJson from "../../../assets/json/中华人民共和国.json";
-import EarthSceneConfig from "../../../config/scene-config";
+import chinaJson from "@/assets/json/中华人民共和国.json";
+import EarthSceneConfig from "@/config/scene-config";
 
 /**
  * 加载中国边界范围线

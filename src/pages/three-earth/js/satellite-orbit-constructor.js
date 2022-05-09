@@ -1,19 +1,15 @@
 import * as THREE from "three";
+import haloImage from "@/assets/images/three-earth/halo.png";
+import smallEarthImage from "@/assets/images/three-earth/smallEarth.png";
 
 /**
  * 加载卫星环绕效果
-<<<<<<< HEAD
  * @param {THREE.Scene} threeScene
  */
 export default function loadSatelliteOrbit(threeScene) {
-=======
- * @param {THREE.Scene} scene
- */
-export default function loadSatelliteOrbit(scene) {
->>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
   const globeTextureLoader = new THREE.TextureLoader();
-  const haloTexture = globeTextureLoader.load("/source/halo.png");
-  const smallEarthTexture = globeTextureLoader.load("/source/smallEarth.png");
+  const haloTexture = globeTextureLoader.load(haloImage);
+  const smallEarthTexture = globeTextureLoader.load(smallEarthImage);
   const group = new THREE.Group();
 
   const haloGeometry = new THREE.PlaneGeometry(16, 16);
@@ -41,10 +37,6 @@ export default function loadSatelliteOrbit(scene) {
   group.add(earthPoints);
 
   group.rotation.set(1.9, 0.5, 1);
-<<<<<<< HEAD
   threeScene.add(group);
-  return group
-=======
-  scene.add(group);
->>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
+  return group;
 }

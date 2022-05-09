@@ -1,17 +1,17 @@
 import * as THREE from "three";
-import { cityList, bizLines } from "../../../config/index";
-import EarthSceneConfig from "../../../config/scene-config";
+import { cityList, bizLines } from "@/config/index";
+import EarthSceneConfig from "@/config/scene-config";
+import dynamicApertureImage from "@/assets/images/three-earth/apertur.png";
 
-<<<<<<< HEAD
 /**
  * 加载动态光圈
  * @param {THREE.Scene} threeScene
  */
 export default function loadDynamicAperture(threeScene) {
   const textureLoader = new THREE.TextureLoader();
-  const texture = textureLoader.load("/source/apertur.png");
+  const texture = textureLoader.load(dynamicApertureImage);
   const waveMeshArr = [];
-  const group = new THREE.Group()
+  const group = new THREE.Group();
 
   for (const key in cityList) {
     const city = cityList[key];
@@ -22,29 +22,11 @@ export default function loadDynamicAperture(threeScene) {
     );
     const mesh = createPointMesh(pos, texture);
     waveMeshArr.push(mesh);
-    group.add(mesh)
+    group.add(mesh);
   }
   animate(waveMeshArr);
   threeScene.add(group);
-  return group
-=======
-const waveMeshArr = [];
-/**
- * 构造星空场景
- * @param {THREE.Scene} scene
- */
-export default function loadDynamicAperture(scene) {
-  const textureLoader = new THREE.TextureLoader();
-  const texture = textureLoader.load("/source/apertur.png");
-  for (const key in cityList) {
-    const city = cityList[key];
-    const pos = lon2xyz(EarthSceneConfig.earthRadius, city.longitude, city.latitude);
-    const mesh = createPointMesh(pos, texture);
-    scene.add(mesh);
-    waveMeshArr.push(mesh);
-  }
-  animate();
->>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
+  return group;
 }
 
 function createPointMesh(pos, texture) {
@@ -72,11 +54,7 @@ function createPointMesh(pos, texture) {
   return mesh;
 }
 
-<<<<<<< HEAD
 function cityWaveAnimate(waveMeshArr) {
-=======
-function cityWaveAnimate() {
->>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
   // 所有波动光圈都有自己的透明度和大小状态
   // 一个波动光圈透明度变化过程是：0~1~0反复循环
   waveMeshArr.forEach((mesh) => {
@@ -96,23 +74,15 @@ function cityWaveAnimate() {
   });
 }
 
-<<<<<<< HEAD
 function animate(waveMeshArr) {
   window.requestAnimationFrame(() => {
     cityWaveAnimate(waveMeshArr);
     animate(waveMeshArr);
-=======
-function animate() {
-  window.requestAnimationFrame(() => {
-    cityWaveAnimate();
-    animate();
->>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
   });
 }
 
 // 经纬度转地球坐标
 function lon2xyz(radius, longitude, latitude) {
-<<<<<<< HEAD
   let lon = (longitude * Math.PI) / 180; //转弧度值
   const lat = (latitude * Math.PI) / 180; //转弧度值
   lon = -lon; // three.js坐标系z坐标轴对应经度-90度，而不是90度
@@ -124,16 +94,3 @@ function lon2xyz(radius, longitude, latitude) {
   // 返回球面坐标
   return new THREE.Vector3(x, y, z);
 }
-=======
-    let lon = (longitude * Math.PI) / 180; //转弧度值
-    const lat = (latitude * Math.PI) / 180; //转弧度值
-    lon = -lon; // three.js坐标系z坐标轴对应经度-90度，而不是90度
-
-    // 经纬度坐标转球面坐标计算公式
-    const x = radius * Math.cos(lat) * Math.cos(lon);
-    const y = radius * Math.sin(lat);
-    const z = radius * Math.cos(lat) * Math.sin(lon);
-    // 返回球面坐标
-    return new THREE.Vector3(x, y, z);
-  }
->>>>>>> e5252861cd0a596499dbe3454dbe467b7f9733bc
