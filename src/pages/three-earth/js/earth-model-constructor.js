@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import EarthSceneConfig from "@/config/scene-config";
-import earthImage from "@/assets/images/three-earth/earth3.jpeg";
+import earthImage from "@/assets/images/three-earth/earth.png";
 
 /**
  * 构造地球模型
